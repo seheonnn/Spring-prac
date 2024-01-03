@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -19,6 +21,14 @@ import umc.springumc.base.ResponseDto;
 public class MasterExceptionHandler extends ResponseEntityExceptionHandler {
     Logger logger = LoggerFactory.getLogger(MasterExceptionHandler.class);
 
+    // @Valid 통해 MethodArgumentNotValidException 감지
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        return handleExceptionValid(ex, ex.getBindingResult().getFieldError().getField() + " : "
+                + ex.getBindingResult().getFieldError().getDefaultMessage(), headers, (HttpStatus) status, request);
+    }
 
     @org.springframework.web.bind.annotation.ExceptionHandler
     public ResponseEntity<Object> validation(ConstraintViolationException e, WebRequest request) {
@@ -73,6 +83,19 @@ public class MasterExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> handleExceptionInternalFalse(Exception e, Code errorCode,
                                                                 HttpHeaders headers, HttpStatus status, WebRequest request) {
         ResponseDto<Object> body = ResponseDto.onFailure(errorCode, null);
+        return super.handleExceptionInternal(
+                e,
+                body,
+                headers,
+                status,
+                request
+        );
+    }
+
+    // @Valid 관련
+    private ResponseEntity<Object> handleExceptionValid(Exception e, String message,
+                                                           HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ResponseDto<Object> body = ResponseDto.onFailure(Code._BAD_REQUEST, message);
         return super.handleExceptionInternal(
                 e,
                 body,

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import umc.springumc.domain.Member;
 import umc.springumc.domain.Mission;
+import umc.springumc.domain.common.BaseEntity;
 import umc.springumc.domain.enums.MissionStatus;
 
 @Entity
@@ -11,7 +12,7 @@ import umc.springumc.domain.enums.MissionStatus;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class MemberMission {
+public class MemberMission extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import umc.springumc.domain.FoodCategory;
 import umc.springumc.domain.Member;
+import umc.springumc.domain.common.BaseEntity;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class MemberPrefer {
+public class MemberPrefer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,7 +21,19 @@ public class MemberPrefer {
     private Member member;
     // 대부분의 비즈니스 로직에서 Member 와 MemberPrefer 관계가 같이 사용된다면 EAGER 가 유리
 
+    // 단방향 mapping
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private FoodCategory foodCategory;
+
+    public void setMember(Member member){
+        if(this.member != null)
+            member.getMemberPreferList().remove(this);
+        this.member = member;
+        member.getMemberPreferList().add(this);
+    }
+
+    public void setFoodCategory(FoodCategory foodCategory){
+        this.foodCategory = foodCategory;
+    }
 }
