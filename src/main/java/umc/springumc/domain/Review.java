@@ -15,6 +15,7 @@ public class Review extends BaseEntity {
     private Long id;
 
     private String title;
+    private String body;
 
     private Float score;
 
