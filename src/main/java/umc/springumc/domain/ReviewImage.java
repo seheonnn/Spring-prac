@@ -4,21 +4,20 @@ import jakarta.persistence.*;
 import lombok.*;
 import umc.springumc.domain.common.BaseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Region extends BaseEntity {
+public class ReviewImage extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String imageUrl;
 
-    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)
-    private List<Store> storeList = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id")
+    private Review review;
 }

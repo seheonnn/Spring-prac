@@ -23,12 +23,15 @@ public class CategoriesExistValidator implements ConstraintValidator<ExistCatego
 
     @Override
     public boolean isValid(List<Long> values, ConstraintValidatorContext context) {
+//        boolean isValid = values.stream()
+//                .allMatch(value -> foodCategoryRepository.existsById(value)); // Repository 접근은 Service 에서만 하는 것이 좋음
+
         boolean isValid = values.stream()
-                .allMatch(value -> foodCategoryRepository.existsById(value)); // Repository 접근은 Service 에서만 하는 것이 좋음
+                .allMatch(value -> foodCategoryRepository.existsById(value));
 
         if (!isValid) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(ErrorStatus.FOOD_CATEGORY_NOT_FOUND.toString()).addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorStatus.FOOD_CATEGORY_NOT_FOUND.getMessage()).addConstraintViolation();
         }
 
         return isValid;
