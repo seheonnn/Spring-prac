@@ -1,3 +1,6 @@
+# Mac os
+*.Ds_Store
+
 HELP.md
 .gradle
 build/
