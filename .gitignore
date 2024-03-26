@@ -1,5 +1,6 @@
 # Mac os
 *.Ds_Store
+**/data/mysql/
 
 HELP.md
 .gradle
