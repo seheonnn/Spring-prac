@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/umcstudy
-    username: root
-    password: root1234!
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PW}
 
   jpa:
     show-sql: true
