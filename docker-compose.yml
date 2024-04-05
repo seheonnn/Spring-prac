@@ -18,3 +18,9 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+
+  backend:
+    image: "seheon/beanstalk-docker:latest"
+    ports:
+      - "80:8080"
+    restart: "always"

@@ -53,6 +53,21 @@ jobs:
         run: ./gradlew clean build -x test
         shell: bash # (7).build시작
 
+      # Docker image Build (1)
+      - name: Docker image build
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/beanstalk-docker --pull --no-cache --platform linux/amd64 .
+
+      # DockerHub Login (2)
+      - name: Docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Docker Hub push (3)
+      - name: Docker Hub push
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/beanstalk-docker
+
       - name: Get current time
         uses: 1466587594/get-current-time@v2
         id: current-time
@@ -78,8 +93,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
-          application_name: project-prod-umcstudy # 원하는 어플 이름 (빈스톡 애플리케이션 이름)
-          environment_name: Project-prod-umcstudy-env  # 원하는 환경 이름 (빈스톡 이름)
+          application_name: project-prod-sponus # 원하는 어플 이름 (빈스톡 애플리케이션 이름)
+          environment_name: Project-prod-sponus-env # 원하는 환경 이름 (빈스톡 이름)
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
           deployment_package: deploy/deploy.zip
