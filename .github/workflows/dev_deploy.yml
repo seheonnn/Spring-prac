@@ -55,7 +55,7 @@ jobs:
 
       # Docker image Build (1)
       - name: Docker image build
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/beanstalk-docker --pull --no-cache --platform linux/amd64 .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/beanstalk-docker:latest --pull --no-cache --platform linux/amd64 .
 
       # DockerHub Login (2)
       - name: Docker login
@@ -66,7 +66,7 @@ jobs:
 
       # Docker Hub push (3)
       - name: Docker Hub push
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/beanstalk-docker
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/beanstalk-docker:latest
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
