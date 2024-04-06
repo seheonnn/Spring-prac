@@ -19,8 +19,8 @@ services:
     ports:
       - "6379:6379"
 
-  backend:
-    image: "docker.io/seheon/beanstalk-docker:latest"
+  beanstalk-spring:
+    image: "seheon/beanstalk-docker"
     ports:
       - "80:8080"
     restart: "always"

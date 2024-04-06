@@ -55,7 +55,7 @@ jobs:
 
       # Docker image Build (1)
       - name: Docker image build
-        run: docker build -t seheon/beanstalk-docker:latest --pull --no-cache --platform linux/amd64 .
+        run: docker build -t seheon/beanstalk-docker --pull --no-cache --platform linux/amd64 .
 
       # DockerHub Login (2)
       - name: Docker login
@@ -66,7 +66,7 @@ jobs:
 
       # Docker Hub push (3)
       - name: Docker Hub push
-        run: docker push seheon/beanstalk-docker:latest
+        run: docker push seheon/beanstalk-docker
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
@@ -86,7 +86,7 @@ jobs:
           cp Procfile deploy/Procfile
           cp -r .ebextensions-dev deploy/.ebextensions
           cp -r .platform deploy/.platform
-          docker save seheon/beanstalk-docker:latest > deploy/beanstalk-docker.tar
+          docker save seheon/beanstalk-docker > deploy/beanstalk-docker.tar
           cd deploy && zip -r deploy.zip .
 
       #      - name: Generate deployment package
