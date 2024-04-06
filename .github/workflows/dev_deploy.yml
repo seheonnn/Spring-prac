@@ -55,7 +55,7 @@ jobs:
 
       # Docker image Build (1)
       - name: Docker image build
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/beanstalk-docker:latest --pull --no-cache --platform linux/amd64 .
+        run: docker build -t seheon/beanstalk-docker:latest --pull --no-cache --platform linux/amd64 .
 
       # DockerHub Login (2)
       - name: Docker login
