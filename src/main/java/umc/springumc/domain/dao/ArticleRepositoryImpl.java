@@ -13,6 +13,7 @@ import umc.springumc.domain.Article;
 @RequiredArgsConstructor
 public class ArticleRepositoryImpl implements ArticleRepository {
 
+	// @PersistenceContext // @PersistenceContext 로도 의존성 주입 가능
 	private final EntityManager entityManager;
 
 	@Override
