@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import umc.springumc.apiPayload.ApiResponse;
+import umc.springumc.apiPayload.global.ApiResponse;
 import umc.springumc.converter.StoreConverter;
 import umc.springumc.domain.Review;
 import umc.springumc.service.StoreService.StoreCommandService;

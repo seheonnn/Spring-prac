@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import umc.springumc.apiPayload.ApiResponse;
+import umc.springumc.apiPayload.global.ApiResponse;
 import umc.springumc.domain.Article;
 import umc.springumc.service.ArticleService.ArticleQueryService;
 import umc.springumc.service.ArticleService.ArticleService;
