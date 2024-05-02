@@ -1,12 +1,21 @@
 package umc.springumc.domain;
 
-import jakarta.persistence.*;
-import lombok.*;
-import umc.springumc.domain.common.BaseEntity;
-import umc.springumc.domain.mapping.MemberAgree;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import umc.springumc.apiPayload.global.BaseEntity;
+import umc.springumc.domain.mapping.MemberAgree;
 
 @Entity
 @Getter
@@ -14,15 +23,15 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Terms extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String title;
+	private String title;
 
-    private String body;
+	private String body;
 
-    private Boolean optional;
-    @OneToMany(mappedBy = "terms", cascade = CascadeType.ALL)
-    private List<MemberAgree> memberAgreeList = new ArrayList<>();
+	private Boolean optional;
+	@OneToMany(mappedBy = "terms", cascade = CascadeType.ALL)
+	private List<MemberAgree> memberAgreeList = new ArrayList<>();
 }
