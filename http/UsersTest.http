@@ -1,0 +1,28 @@
+### 회원가입
+POST {{base_url}}/api/v1/users/join
+Content-Type: application/json
+
+{
+  "username": "201911111",
+  "email": "test1234@naver.com",
+  "password": "test1234#",
+  "passwordCheck": "test1234#"
+}
+
+### 로그인
+POST {{base_url}}/api/v1/users/login
+Content-Type: application/json
+
+{
+  "username": "201911111",
+  "password": "test1234#"
+}
+
+### 로그아웃
+GET {{base_url}}/api/v1/users/logout
+Authorization: Bearer {{access_token}}
+
+// 어노테이션 테스트
+### 테스트
+GET {{base_url}}/api/v1/users/test
+Authorization: Bearer {{access_token}}
