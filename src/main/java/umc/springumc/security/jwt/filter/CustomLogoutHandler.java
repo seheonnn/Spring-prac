@@ -29,10 +29,10 @@ public class CustomLogoutHandler implements LogoutHandler {
 
 			String accessToken = jwtUtil.resolveAccessToken(request);
 
-			if (redisUtil.hasKey(accessToken)) {
-				log.info("=====================================");
-				throw new SecurityCustomException(TokenErrorCode.INVALID_TOKEN);
-			}
+			// if (redisUtil.hasKey(accessToken)) {
+			// 	log.info("=====================================");
+			// 	throw new SecurityCustomException(TokenErrorCode.INVALID_TOKEN);
+			// }
 
 			redisUtil.save(
 				accessToken,

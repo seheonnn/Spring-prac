@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import umc.springumc.security.jwt.exception.JwtAccessDeniedHandler;
+import umc.springumc.security.jwt.exception.JwtAuthenticationEntryPoint;
 import umc.springumc.security.jwt.filter.CustomLoginFilter;
 import umc.springumc.security.jwt.filter.CustomLogoutHandler;
 import umc.springumc.security.jwt.filter.JwtAuthenticationFilter;
@@ -41,7 +42,7 @@ public class SecurityConfig {
 
 	private final AuthenticationConfiguration authenticationConfiguration;
 
-	// private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 	private final JwtUtil jwtUtil;
 	private final RedisUtil redisUtil;
@@ -59,6 +60,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+		// CorsConfig 적용
 		http
 			.cors(cors -> cors
 				.configurationSource(CorsConfig.apiConfigurationSource()));
@@ -75,11 +77,19 @@ public class SecurityConfig {
 		http
 			.httpBasic(AbstractHttpConfigurer::disable);
 
+		// session 사용 x, Stateless 서버를 만듦
+		http
+			.sessionManagement(session -> session
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			);
+
 		// 경로별 인가 작업
 		http
-			.authorizeHttpRequests(auth -> auth
+			.authorizeHttpRequests(authorizeRequests -> authorizeRequests
+				.requestMatchers("/user/**").authenticated()
+				.requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGE")
+				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers(allowedUrls).permitAll()
-				.requestMatchers("/**").authenticated()
 				.anyRequest().permitAll()
 			);
 
@@ -92,22 +102,21 @@ public class SecurityConfig {
 		http
 			.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
 
+		// JwtExceptionFilter 사용
 		http
 			.addFilterBefore(new JwtAuthenticationFilter(jwtUtil, redisUtil), CustomLoginFilter.class);
 
 		http
 			.addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
 
+		// JwtExceptionFilter 사용 x
 		// http
-		// 	.exceptionHandling(exception -> exception
-		// .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-		// .accessDeniedHandler(jwtAccessDeniedHandler)
-		// );
+		// 	.addFilterBefore(new JwtAuthenticationFilter(jwtUtil, redisUtil), CustomLoginFilter.class);
 
-		// 세션 사용 안함
 		http
-			.sessionManagement(session -> session
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.exceptionHandling(exception -> exception
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.accessDeniedHandler(jwtAccessDeniedHandler)
 			);
 
 		// Logout Filter

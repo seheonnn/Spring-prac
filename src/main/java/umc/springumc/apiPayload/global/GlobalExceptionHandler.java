@@ -17,18 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler({Exception.class})
-	public ResponseEntity<ApiResponse<String>> handleAllException(Exception e) {
-		log.error(">>>>> Internal Server Error : ", e);
-		BaseErrorCode errorCode = GlobalErrorCode.INTERNAL_SERVER_ERROR;
-		ApiResponse<String> errorResponse = ApiResponse.onFailure(
-			errorCode.getCode(),
-			errorCode.getMessage(),
-			e.getMessage()
-		);
-		return ResponseEntity.internalServerError().body(errorResponse);
-	}
-
 	@ExceptionHandler({CustomException.class})
 	public ResponseEntity<ApiResponse<Void>> handleCustomException(CustomException e) {
 		BaseErrorCode errorCode = e.getErrorCode();
@@ -63,5 +51,20 @@ public class GlobalExceptionHandler {
 			GlobalErrorCode.VALIDATION_FAILED.getMessage(),
 			failedValidations);
 		return ResponseEntity.status(ex.getStatusCode()).body(errorResponse);
+	}
+
+	// 그 외의 정의되지 않은 모든 예외 처리
+	@ExceptionHandler({Exception.class})
+	public ResponseEntity<ApiResponse<String>> handleAllException(Exception e) {
+		log.error(">>>>> Internal Server Error : ", e);
+		BaseErrorCode errorCode = GlobalErrorCode.INTERNAL_SERVER_ERROR;
+		ApiResponse<String> errorResponse = ApiResponse.onFailure(
+			errorCode.getCode(),
+			errorCode.getMessage(),
+			e.getMessage()
+		);
+		return ResponseEntity
+			.status(errorCode.getHttpStatus())
+			.body(errorResponse);
 	}
 }
