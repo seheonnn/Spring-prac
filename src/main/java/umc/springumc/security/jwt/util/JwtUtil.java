@@ -29,13 +29,12 @@ import umc.springumc.security.jwt.userdetails.CustomUserDetails;
 @Component
 public class JwtUtil {
 
-	private final String USERNAME = "username";
-	private final String IS_STAFF = "is_staff";
-	private static final String AUTHORITIES_CLAIM_NAME = "auth";
 	private final SecretKey secretKey;
 	private final Long accessExpMs;
 	private final Long refreshExpMs;
 	private final RedisUtil redisUtil;
+	private static final String USERNAME = "username";
+	private static final String IS_STAFF = "is_staff";
 
 	public JwtUtil(
 		@Value("${jwt.secret}") String secret,
@@ -131,11 +130,9 @@ public class JwtUtil {
 
 	public void validateRefreshToken(String refreshToken) {
 		// refreshToken 유효성 검증
-		// String email = getEmail(refreshToken);
 		String username = getUsername(refreshToken);
 
 		//redis에 refreshToken 있는지 검증
-		// if (!redisUtil.hasKey(email + "_refresh_token")) {
 		if (!redisUtil.hasKey(username + "_refresh_token")) {
 			log.warn("[*] case : Invalid refreshToken");
 			throw new SecurityCustomException(INVALID_TOKEN);
@@ -143,11 +140,11 @@ public class JwtUtil {
 	}
 
 	public String getUsername(String token) {
-		return getClaims(token).get("username", String.class);
+		return getClaims(token).get(USERNAME, String.class);
 	}
 
 	public boolean isStaff(String token) {
-		return getClaims(token).get("is_staff", Boolean.class);
+		return getClaims(token).get(IS_STAFF, Boolean.class);
 	}
 
 	public Boolean isExpired(String token) {
