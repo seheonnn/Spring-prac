@@ -49,9 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			if (redisUtil.get(accessToken) != null && redisUtil.get(accessToken).equals("logout")) {
 				log.info("[*] Logout accessToken");
 				// TODO InsufficientAuthenticationException 예외 처리
-				log.info("==================");
 				filterChain.doFilter(request, response);
-				log.info("==================");
 				return;
 			}
 

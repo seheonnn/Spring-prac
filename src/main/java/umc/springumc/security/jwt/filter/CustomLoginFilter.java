@@ -108,8 +108,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 			response, HttpStatus.UNAUTHORIZED,
 			ApiResponse.onFailure(
 				HttpStatus.BAD_REQUEST.name(),
-				errorMessage,
-				null
+				errorMessage
 			)
 		);
 	}

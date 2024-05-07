@@ -1,5 +1,7 @@
 package umc.springumc.security.jwt.util;
 
+import static umc.springumc.security.jwt.exception.TokenErrorCode.*;
+
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
@@ -9,66 +11,43 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import umc.springumc.security.jwt.dto.JwtDto;
 import umc.springumc.security.jwt.exception.SecurityCustomException;
-import umc.springumc.security.jwt.exception.TokenErrorCode;
 import umc.springumc.security.jwt.userdetails.CustomUserDetails;
-import umc.springumc.security.jwt.userdetails.CustomUserDetailsService;
 
 @Slf4j
 @Component
 public class JwtUtil {
 
-	private final static String USERNAME = "username";
-	private final static String IS_STAFF = "is_staff";
-	private final CustomUserDetailsService customUserDetailsService;
+	private final String USERNAME = "username";
+	private final String IS_STAFF = "is_staff";
+	private static final String AUTHORITIES_CLAIM_NAME = "auth";
 	private final SecretKey secretKey;
 	private final Long accessExpMs;
 	private final Long refreshExpMs;
 	private final RedisUtil redisUtil;
 
 	public JwtUtil(
-		CustomUserDetailsService customUserDetailsService, @Value("${jwt.secret}") String secret,
+		@Value("${jwt.secret}") String secret,
 		@Value("${jwt.token.access-expiration-time}") Long access,
 		@Value("${jwt.token.refresh-expiration-time}") Long refresh,
 		RedisUtil redis) {
-		this.customUserDetailsService = customUserDetailsService;
 
 		secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8),
 			Jwts.SIG.HS256.key().build().getAlgorithm());
 		accessExpMs = access;
 		refreshExpMs = refresh;
 		redisUtil = redis;
-	}
-
-	public String getUsername(String token) throws SignatureException {
-		return Jwts.parser()
-			.setSigningKey(secretKey)
-			.build()
-			.parseClaimsJws(token)
-			.getBody()
-			.get(USERNAME, String.class);
-	}
-
-	public boolean isStaff(String token) throws SignatureException {
-		return (Boolean)Jwts.parser().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get(IS_STAFF);
-	}
-
-	public boolean isExpired(String token) throws SignatureException {
-		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration()
-			.before(new Date());
-	}
-
-	public long getExpTime(String token) {
-		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration()
-			.getTime();
 	}
 
 	public String createJwtAccessToken(CustomUserDetails customUserDetails) {
@@ -104,8 +83,8 @@ public class JwtUtil {
 			.signWith(secretKey)
 			.compact();
 
-		redisUtil.save(
-			customUserDetails.getUsername(),
+		redisUtil.saveAsValue(
+			customUserDetails.getUsername() + "_refresh_token",
 			refreshToken,
 			refreshExpMs,
 			TimeUnit.MILLISECONDS
@@ -114,39 +93,95 @@ public class JwtUtil {
 	}
 
 	public JwtDto reissueToken(String refreshToken) throws SignatureException {
-		UserDetails userDetails = customUserDetailsService.loadUserByUsername(getUsername(refreshToken));
+		try {
+			validateRefreshToken(refreshToken);
+			log.info("[*] Valid RefreshToken");
 
-		return new JwtDto(
-			createJwtAccessToken((CustomUserDetails)userDetails),
-			createJwtRefreshToken((CustomUserDetails)userDetails)
-		);
+			CustomUserDetails tempCustomUserDetails = new CustomUserDetails(
+				// getId(refreshToken),
+				// getEmail(refreshToken),
+				getUsername(refreshToken),
+				null,
+				// getAuthority(refreshToken)
+				isStaff(refreshToken)
+			);
+
+			return new JwtDto(
+				createJwtAccessToken(tempCustomUserDetails),
+				createJwtRefreshToken(tempCustomUserDetails)
+			);
+		} catch (IllegalArgumentException iae) {
+			throw new SecurityCustomException(INVALID_TOKEN, iae);
+		} catch (ExpiredJwtException eje) {
+			throw new SecurityCustomException(TOKEN_EXPIRED, eje);
+		}
 	}
 
 	public String resolveAccessToken(HttpServletRequest request) {
 		String authorization = request.getHeader("Authorization");
 
 		if (authorization == null || !authorization.startsWith("Bearer ")) {
-
 			log.warn("[*] No Token in req");
-
 			return null;
 		}
 
 		log.info("[*] Token exists");
-
 		return authorization.split(" ")[1];
 	}
 
-	public boolean validateRefreshToken(String refreshToken) {
-
-		// refreshToken validate
+	public void validateRefreshToken(String refreshToken) {
+		// refreshToken 유효성 검증
+		// String email = getEmail(refreshToken);
 		String username = getUsername(refreshToken);
 
-		//redis 확인
-		if (!redisUtil.hasKey(username) || isExpired(refreshToken)) {
-			throw new SecurityCustomException(TokenErrorCode.INVALID_TOKEN);
+		//redis에 refreshToken 있는지 검증
+		// if (!redisUtil.hasKey(email + "_refresh_token")) {
+		if (!redisUtil.hasKey(username + "_refresh_token")) {
+			log.warn("[*] case : Invalid refreshToken");
+			throw new SecurityCustomException(INVALID_TOKEN);
 		}
-		return true;
 	}
 
+	public String getUsername(String token) {
+		return getClaims(token).get("username", String.class);
+	}
+
+	// public Long getId(String token) {
+	// 	return Long.parseLong(getClaims(token).getSubject());
+	// }
+	//
+	// public String getEmail(String token) {
+	// 	return getClaims(token).get("email", String.class);
+	// }
+	//
+	// public String getAuthority(String token) {
+	// 	return getClaims(token).get(AUTHORITIES_CLAIM_NAME, String.class);
+	// }
+
+	// public boolean isStaff(String token) throws SignatureException {
+	// 	return (Boolean)Jwts.parser().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get(IS_STAFF);
+	// }
+
+	public Boolean isStaff(String token) {
+		return getClaims(token).get("isStaff", Boolean.class);
+	}
+
+	public Boolean isExpired(String token) {
+		// 여기서 토큰 형식 이상한 것도 걸러짐
+		return getClaims(token).getExpiration().before(Date.from(Instant.now()));
+	}
+
+	public Long getExpTime(String token) {
+		return getClaims(token).getExpiration().getTime();
+	}
+
+	private Claims getClaims(String token) {
+		try {
+			return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
+		} catch (UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
+			throw new SecurityCustomException(INVALID_TOKEN, e);
+		} catch (SignatureException e) {
+			throw new SecurityCustomException(TOKEN_SIGNATURE_ERROR, e);
+		}
+	}
 }

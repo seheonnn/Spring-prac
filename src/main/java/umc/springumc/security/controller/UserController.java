@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +16,6 @@ import umc.springumc.security.dto.UserRegisterRequestDto;
 import umc.springumc.security.dto.UserRegisterResponseDto;
 import umc.springumc.security.entity.User;
 import umc.springumc.security.jwt.dto.JwtDto;
-import umc.springumc.security.jwt.exception.SecurityCustomException;
-import umc.springumc.security.jwt.exception.TokenErrorCode;
 import umc.springumc.security.jwt.util.JwtUtil;
 import umc.springumc.security.service.UserService;
 
@@ -39,16 +36,7 @@ public class UserController {
 
 	@GetMapping("/reissue")
 	public ApiResponse<JwtDto> reissueToken(@RequestHeader("RefreshToken") String refreshToken) {
-		try {
-			jwtUtil.validateRefreshToken(refreshToken);
-			return ApiResponse.onSuccess(
-				jwtUtil.reissueToken(refreshToken)
-			);
-		} catch (ExpiredJwtException eje) {
-			throw new SecurityCustomException(TokenErrorCode.TOKEN_EXPIRED, eje);
-		} catch (IllegalArgumentException iae) {
-			throw new SecurityCustomException(TokenErrorCode.INVALID_TOKEN, iae);
-		}
+		return ApiResponse.onSuccess(jwtUtil.reissueToken(refreshToken));
 	}
 
 	@GetMapping("/test")
