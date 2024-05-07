@@ -58,14 +58,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 		} catch (ExpiredJwtException e) {
 			log.warn("[*] case : accessToken Expired");
+			throw new SecurityCustomException(TokenErrorCode.TOKEN_EXPIRED);
 		}
 	}
 
 	private void authenticateAccessToken(String accessToken) {
-
-		if (jwtUtil.isExpired(accessToken))
-			throw new SecurityCustomException(TokenErrorCode.INVALID_TOKEN);
-
 		CustomUserDetails userDetails = new CustomUserDetails(
 			jwtUtil.getUsername(accessToken),
 			null,

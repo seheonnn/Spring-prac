@@ -21,8 +21,8 @@ logging:
 jwt:
   secret: "dkqorhvmekgkwlaksdltlrksdpanjfajrdmausdksehlrpTwlckawk"
   token:
-    access-expiration-time: 99999999
-    refresh-expiration-time: 99999999
+    access-expiration-time: 9999999
+    refresh-expiration-time: 9999999
 
 # Redis 설정
 redis:

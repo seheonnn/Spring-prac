@@ -162,7 +162,7 @@ public class JwtUtil {
 	// 	return (Boolean)Jwts.parser().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get(IS_STAFF);
 	// }
 
-	public Boolean isStaff(String token) {
+	public boolean isStaff(String token) {
 		return getClaims(token).get("isStaff", Boolean.class);
 	}
 
