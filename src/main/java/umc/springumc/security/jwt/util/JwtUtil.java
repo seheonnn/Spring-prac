@@ -146,24 +146,8 @@ public class JwtUtil {
 		return getClaims(token).get("username", String.class);
 	}
 
-	// public Long getId(String token) {
-	// 	return Long.parseLong(getClaims(token).getSubject());
-	// }
-	//
-	// public String getEmail(String token) {
-	// 	return getClaims(token).get("email", String.class);
-	// }
-	//
-	// public String getAuthority(String token) {
-	// 	return getClaims(token).get(AUTHORITIES_CLAIM_NAME, String.class);
-	// }
-
-	// public boolean isStaff(String token) throws SignatureException {
-	// 	return (Boolean)Jwts.parser().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get(IS_STAFF);
-	// }
-
 	public boolean isStaff(String token) {
-		return getClaims(token).get("isStaff", Boolean.class);
+		return getClaims(token).get("is_staff", Boolean.class);
 	}
 
 	public Boolean isExpired(String token) {
