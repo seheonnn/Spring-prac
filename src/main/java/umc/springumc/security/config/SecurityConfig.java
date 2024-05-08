@@ -36,7 +36,7 @@ import umc.springumc.security.jwt.util.RedisUtil;
 public class SecurityConfig {
 
 	private final String[] swaggerUrls = {"/swagger-ui/**", "/v3/**"};
-	private final String[] authUrls = {"/", "/api/v1/users/join/**", "/api/v1/users/login/**"};
+	private final String[] authUrls = {"/", "/api/v1/users/join/**", "/api/v1/users/login/**", "/api/v1/redis/**"};
 	private final String[] allowedUrls = Stream.concat(Arrays.stream(swaggerUrls), Arrays.stream(authUrls))
 		.toArray(String[]::new);
 
