@@ -20,7 +20,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 		AccessDeniedException accessDeniedException) throws IOException {
-		log.warn("Access Denied: ", accessDeniedException);
+		log.warn("[*] Access Denied: ", accessDeniedException);
 
 		HttpResponseUtil.setErrorResponse(response,
 			HttpStatus.FORBIDDEN,

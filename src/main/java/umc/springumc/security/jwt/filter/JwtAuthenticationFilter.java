@@ -2,6 +2,7 @@ package umc.springumc.security.jwt.filter;
 
 import java.io.IOException;
 
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,7 +49,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			// logout 처리된 accessToken
 			if (redisUtil.get(accessToken) != null && redisUtil.get(accessToken).equals("logout")) {
 				log.info("[*] Logout accessToken");
-				// TODO InsufficientAuthenticationException 예외 처리
 				filterChain.doFilter(request, response);
 				return;
 			}
@@ -59,6 +59,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		} catch (ExpiredJwtException e) {
 			log.warn("[*] case : accessToken Expired");
 			throw new SecurityCustomException(TokenErrorCode.TOKEN_EXPIRED);
+		} catch (InsufficientAuthenticationException e) {
+			log.warn("[*] case : FORBIDDEN");
+			throw new SecurityCustomException(TokenErrorCode.FORBIDDEN);
 		}
 	}
 

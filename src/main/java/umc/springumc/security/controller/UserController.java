@@ -16,7 +16,6 @@ import umc.springumc.security.dto.UserRegisterRequestDto;
 import umc.springumc.security.dto.UserRegisterResponseDto;
 import umc.springumc.security.entity.User;
 import umc.springumc.security.jwt.dto.JwtDto;
-import umc.springumc.security.jwt.util.JwtUtil;
 import umc.springumc.security.service.UserService;
 
 @Slf4j
@@ -27,8 +26,6 @@ public class UserController {
 
 	private final UserService userService;
 
-	private final JwtUtil jwtUtil;
-
 	@PostMapping("/join")
 	public ApiResponse<UserRegisterResponseDto> register(@Valid @RequestBody UserRegisterRequestDto request) {
 		return ApiResponse.onSuccess(userService.register(request));
@@ -36,7 +33,7 @@ public class UserController {
 
 	@GetMapping("/reissue")
 	public ApiResponse<JwtDto> reissueToken(@RequestHeader("RefreshToken") String refreshToken) {
-		return ApiResponse.onSuccess(jwtUtil.reissueToken(refreshToken));
+		return ApiResponse.onSuccess(userService.reissueToken(refreshToken));
 	}
 
 	@GetMapping("/test")

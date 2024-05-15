@@ -10,6 +10,8 @@ import umc.springumc.security.dto.UserRegisterResponseDto;
 import umc.springumc.security.entity.User;
 import umc.springumc.security.exception.UserErrorCode;
 import umc.springumc.security.exception.UserExceptionHandler;
+import umc.springumc.security.jwt.dto.JwtDto;
+import umc.springumc.security.jwt.util.JwtUtil;
 import umc.springumc.security.repository.user.UserRepository;
 
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final JwtUtil jwtUtil;
 
 	public UserRegisterResponseDto register(UserRegisterRequestDto request) {
 
@@ -29,5 +32,9 @@ public class UserService {
 		User newUser = request.toEntity(encodedPw);
 
 		return UserRegisterResponseDto.from(userRepository.save(newUser));
+	}
+
+	public JwtDto reissueToken(String refreshToken) {
+		return jwtUtil.reissueToken(refreshToken);
 	}
 }
