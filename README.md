@@ -1,4 +1,8 @@
-UMC 스프링 워크북 기반 Error Catch & Custom Annotation 학습
+UMC 스프링 워크북 기반
+
+- Custom Annotation
+- Redis [참고](https://github.com/seheonnn/Spring-umc/blob/main/src/main/java/umc/springumc/redis/redis.md)
+- Spring Security
 
 <img width="300" alt="1" src="https://github.com/seheonnn/Spring-umc/assets/101795921/d2827ed9-9eb5-4e19-b0b0-4ec9f6f0396c">
 <br>
