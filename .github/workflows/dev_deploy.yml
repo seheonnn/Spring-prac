@@ -114,5 +114,6 @@ jobs:
           environment_name: Project-prod-sponus-env # 원하는 환경 이름 (빈스톡 이름)
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: deploy/deploy.zip
+          #          deployment_package: deploy/deploy.zip
+          docker_image: seheon/beanstalk-docker:latest
           wait_for_deployment: false
