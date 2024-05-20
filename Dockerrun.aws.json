@@ -1,7 +1,17 @@
 {
   "AWSEBDockerrunVersion": "3",
-  "Authentication": {
-    "bucket": "DOC-EXAMPLE-BUCKET",
-    "key": "mydockercfg"
-  }
+  "containerDefinitions": [
+    {
+      "name": "nginx",
+      "image": "seheon/beanstalk-docker",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ]
+    }
+  ]
 }
