@@ -86,8 +86,15 @@ jobs:
           cp Procfile deploy/Procfile
           cp -r .ebextensions-dev deploy/.ebextensions
           cp -r .platform deploy/.platform
-          docker save seheon/beanstalk-docker > deploy/beanstalk-docker.tar
-          cd deploy && zip -r deploy.zip .
+          docker tag seheon/beanstalk-docker seheon/beanstalk-docker:latest
+        shell: bash
+        #          mkdir -p deploy
+      #          cp build/libs/*.jar deploy/application.jar
+      #          cp Procfile deploy/Procfile
+      #          cp -r .ebextensions-dev deploy/.ebextensions
+      #          cp -r .platform deploy/.platform
+      #          docker save seheon/beanstalk-docker > deploy/beanstalk-docker.tar
+      #          cd deploy && zip -r deploy.zip .
 
       #      - name: Generate deployment package
       #        run: |
