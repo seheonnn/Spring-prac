@@ -6,7 +6,7 @@
 #
 #ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "/app.jar"]
 
-FROM ubuntu:12.04
+FROM ubuntu:22.04
 
 RUN apt-get update
 RUN apt-get install -y nginx zip curl
