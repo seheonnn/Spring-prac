@@ -1,12 +1,7 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "Image": {
-    "Name": "seheon/beanstalk-flask",
-    "Update": "true"
-  },
-  "Ports": [
-    {
-      "ContainerPort": "8080"
-    }
-  ]
+  "AWSEBDockerrunVersion": "3",
+  "Authentication": {
+    "bucket": "DOC-EXAMPLE-BUCKET",
+    "key": "mydockercfg"
+  }
 }
