@@ -83,36 +83,18 @@ jobs:
         run: |
           mkdir -p deploy
           cp build/libs/*.jar deploy/application.jar
-          cp Procfile deploy/Procfile
-          cp -r .ebextensions-dev deploy/.ebextensions
-          cp -r .platform deploy/.platform
+          cp nginx.conf deploy/nginx.conf
+          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
           docker tag seheon/beanstalk-docker seheon/beanstalk-docker:latest
-
-        #          mkdir -p deploy
-      #          cp build/libs/*.jar deploy/application.jar
-      #          cp Procfile deploy/Procfile
-      #          cp -r .ebextensions-dev deploy/.ebextensions
-      #          cp -r .platform deploy/.platform
-      #          docker save seheon/beanstalk-docker > deploy/beanstalk-docker.tar
-      #          cd deploy && zip -r deploy.zip .
-
-      #      - name: Generate deployment package
-      #        run: |
-      #          mkdir -p deploy
-      #          cp build/libs/*.jar deploy/application.jar
-      #          cp Procfile deploy/Procfile
-      #          cp -r .ebextensions-dev deploy/.ebextensions
-      #          cp -r .platform deploy/.platform
-      #          cd deploy && zip -r deploy.zip .
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
         with:
           aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
-          application_name: project-prod-sponus # 원하는 어플 이름 (빈스톡 애플리케이션 이름)
-          environment_name: Project-prod-sponus-env # 원하는 환경 이름 (빈스톡 이름)
+          application_name: project-prod-study
+          environment_name: Project-prod-study-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: Dockerrun.aws.json
+          deployment_package: deploy/Dockerrun.aws.json
           wait_for_deployment: false

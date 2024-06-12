@@ -1,9 +1,9 @@
 {
-  "AWSEBDockerrunVersion": "1",
+  "AWSEBDockerrunVersion": 2,
   "containerDefinitions": [
     {
       "name": "nginx",
-      "image": "seheon/beanstalk-docker",
+      "image": "nginx",
       "essential": true,
       "memory": 128,
       "portMappings": [
@@ -11,9 +11,43 @@
           "hostPort": 80,
           "containerPort": 80
         }
+      ]
+    },
+    {
+      "name": "sponus-docker",
+      "image": "seheon/beanstalk-docker",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 8080,
+          "containerPort": 8080
+        }
       ],
-      "ports": [
-        80
+      "environment": [
+        {
+          "name": "SPRING_PROFILES_ACTIVE",
+          "value": "dev"
+        },
+        {
+          "name": "TZ",
+          "value": "Asia/Seoul"
+        }
+      ],
+      "links": [
+        "redis"
+      ]
+    },
+    {
+      "name": "redis",
+      "image": "redis",
+      "essential": false,
+      "memory": 256,
+      "portMappings": [
+        {
+          "hostPort": 6379,
+          "containerPort": 6379
+        }
       ]
     }
   ]
