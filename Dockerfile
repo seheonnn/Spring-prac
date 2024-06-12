@@ -12,7 +12,7 @@ FROM nginx:alpine
 COPY .platform/nginx.conf /etc/nginx/nginx.conf
 
 # 스프링 부트 JAR 파일 복사
-COPY --from=builder /app/build/libs/your-app.jar /usr/share/nginx/html/app.jar
+COPY --from=builder /app/build/libs/*.jar /usr/share/nginx/html/app.jar
 
 # Nginx 및 스프링 부트 애플리케이션 실행
 CMD ["sh", "-c", "java -jar /usr/share/nginx/html/app.jar & nginx -g 'daemon off;'"]
