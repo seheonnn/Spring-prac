@@ -9,7 +9,7 @@ RUN ./gradlew clean build -x test
 FROM nginx:alpine
 
 # Nginx 설정 파일 복사
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY .platform/nginx.conf /etc/nginx/nginx.conf
 
 # 스프링 부트 JAR 파일 복사
 COPY --from=builder /app/build/libs/your-app.jar /usr/share/nginx/html/app.jar
