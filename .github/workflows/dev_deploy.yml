@@ -83,7 +83,7 @@ jobs:
         run: |
           mkdir -p deploy
           cp build/libs/*.jar deploy/application.jar
-          cp nginx.conf deploy/nginx.conf
+          cp ./platform/nginx.conf deploy/nginx.conf
           cp Dockerrun.aws.json deploy/Dockerrun.aws.json
           docker tag seheon/beanstalk-docker seheon/beanstalk-docker:latest
 
