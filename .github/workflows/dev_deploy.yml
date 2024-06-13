@@ -59,7 +59,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: seheon/beanstalk-docker:latest
+          tags: seheon/beanstalk-docker
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
