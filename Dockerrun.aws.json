@@ -12,16 +12,26 @@
           "HostPort": 80,
           "ContainerPort": 80
         }
+      ],
+      "Ports": [
+        {
+          "ContainerPort": 80
+        }
       ]
     },
     {
-      "Name": "sponus-docker",
+      "Name": "beanstalk-docker",
       "Image": "seheon/beanstalk-docker",
       "Essential": true,
       "Memory": 512,
       "PortMappings": [
         {
           "HostPort": 8080,
+          "ContainerPort": 8080
+        }
+      ],
+      "Ports": [
+        {
           "ContainerPort": 8080
         }
       ],
@@ -47,6 +57,11 @@
       "PortMappings": [
         {
           "HostPort": 6379,
+          "ContainerPort": 6379
+        }
+      ],
+      "Ports": [
+        {
           "ContainerPort": 6379
         }
       ]
