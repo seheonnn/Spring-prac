@@ -1,13 +1,55 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "Image": {
-    "Name": "seheon/beanstalk-docker",
-    "Update": "true"
-  },
-  "Ports": [
+  "AWSEBDockerrunVersion": "2",
+  "volumes": [],
+  "containerDefinitions": [
     {
-      "ContainerPort": 8080,
-      "HostPort": 8080
+      "name": "nginx",
+      "image": "nginx",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ]
+    },
+    {
+      "name": "beanstalk-docker",
+      "image": "seheon/beanstalk-docker",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 8080,
+          "containerPort": 8080
+        }
+      ],
+      "environment": [
+        {
+          "name": "SPRING_PROFILES_ACTIVE",
+          "value": "dev"
+        },
+        {
+          "name": "TZ",
+          "value": "Asia/Seoul"
+        }
+      ],
+      "links": [
+        "redis"
+      ]
+    },
+    {
+      "name": "redis",
+      "image": "redis",
+      "essential": false,
+      "memory": 256,
+      "portMappings": [
+        {
+          "hostPort": 6379,
+          "containerPort": 6379
+        }
+      ]
     }
   ]
 }
