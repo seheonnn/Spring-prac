@@ -1,12 +1,13 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "seheon/beanstalk-docker:latest",
+    "Name": "seheon/beanstalk-docker",
     "Update": "true"
   },
   "Ports": [
     {
-      "ContainerPort": "8080"
+      "ContainerPort": "5000",
+      "HostPort": "5000"
     }
   ]
 }
