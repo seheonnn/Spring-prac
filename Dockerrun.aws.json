@@ -1,52 +1,53 @@
 {
-  "AWSEBDockerrunVersion": 2,
-  "containerDefinitions": [
+  "AWSEBDockerrunVersion": "1",
+  "Volumes": [],
+  "Containers": [
     {
-      "name": "nginx",
-      "image": "nginx",
-      "essential": true,
-      "memory": 128,
-      "portMappings": [
+      "Name": "nginx",
+      "Image": "nginx",
+      "Essential": true,
+      "Memory": 128,
+      "PortMappings": [
         {
-          "hostPort": 80,
-          "containerPort": 80
+          "HostPort": 80,
+          "ContainerPort": 80
         }
       ]
     },
     {
-      "name": "sponus-docker",
-      "image": "seheon/beanstalk-docker",
-      "essential": true,
-      "memory": 512,
-      "portMappings": [
+      "Name": "sponus-docker",
+      "Image": "seheon/beanstalk-docker",
+      "Essential": true,
+      "Memory": 512,
+      "PortMappings": [
         {
-          "hostPort": 8080,
-          "containerPort": 8080
+          "HostPort": 8080,
+          "ContainerPort": 8080
         }
       ],
-      "environment": [
+      "Environment": [
         {
-          "name": "SPRING_PROFILES_ACTIVE",
-          "value": "dev"
+          "Name": "SPRING_PROFILES_ACTIVE",
+          "Value": "dev"
         },
         {
-          "name": "TZ",
-          "value": "Asia/Seoul"
+          "Name": "TZ",
+          "Value": "Asia/Seoul"
         }
       ],
-      "links": [
+      "Links": [
         "redis"
       ]
     },
     {
-      "name": "redis",
-      "image": "redis",
-      "essential": false,
-      "memory": 256,
-      "portMappings": [
+      "Name": "redis",
+      "Image": "redis",
+      "Essential": false,
+      "Memory": 256,
+      "PortMappings": [
         {
-          "hostPort": 6379,
-          "containerPort": 6379
+          "HostPort": 6379,
+          "ContainerPort": 6379
         }
       ]
     }
