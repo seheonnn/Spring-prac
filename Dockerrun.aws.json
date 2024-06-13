@@ -1,7 +1,8 @@
 {
-  "AWSEBDockerrunVersion": 3,
-  "containerDefinitions": {
-    "springboot-app": {
+  "AWSEBDockerrunVersion": "3",
+  "containerDefinitions": [
+    {
+      "name": "springboot-app",
       "image": "seheon/beanstalk-docker",
       "memory": 512,
       "essential": true,
@@ -29,7 +30,8 @@
         "redis"
       ]
     },
-    "redis": {
+    {
+      "name": "redis",
       "image": "redis",
       "memory": 256,
       "essential": false,
@@ -40,5 +42,5 @@
         }
       ]
     }
-  }
+  ]
 }
