@@ -21,6 +21,25 @@
         {
           "Name": "TZ",
           "Value": "Asia/Seoul"
+        },
+        {
+          "Name": "REDIS_HOST",
+          "Value": "redis"
+        }
+      ],
+      "Links": [
+        "redis"
+      ]
+    },
+    {
+      "Name": "redis",
+      "Image": "redis",
+      "Essential": false,
+      "Memory": 256,
+      "Ports": [
+        {
+          "HostPort": 6379,
+          "ContainerPort": 6379
         }
       ]
     }
