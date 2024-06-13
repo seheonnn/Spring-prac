@@ -68,5 +68,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
           application_name: project-prod-study
           environment_name: Project-prod-study-env
+          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
           deployment_package: Dockerrun.aws.json
