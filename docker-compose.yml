@@ -1,26 +1,38 @@
-# docker compose up -d
-version: '3'
+## docker compose up -d
+#version: '3'
+#
+#services:
+#  mysql:
+#    image: mysql:latest
+#    container_name: umcstudy
+#    environment:
+#      MYSQL_ROOT_USER: root
+#      MYSQL_ROOT_PASSWORD: root1234!
+#      MYSQL_DATABASE: umcstudy
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - ./data/mysql:/var/lib/mysql
+#
+#  redis:
+#    image: redis:latest
+#    ports:
+#      - "6379:6379"
 
+version: '3'
 services:
-  mysql:
-    image: mysql:latest
-    container_name: umcstudy
-    environment:
-      MYSQL_ROOT_USER: root
-      MYSQL_ROOT_PASSWORD: root1234!
-      MYSQL_DATABASE: umcstudy
+  springboot-app:
+    image: seheon/beanstalk-docker
     ports:
-      - "3306:3306"
-    volumes:
-      - ./data/mysql:/var/lib/mysql
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - TZ=Asia/Seoul
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
 
   redis:
-    image: redis:latest
+    image: redis
     ports:
       - "6379:6379"
-
-#  beanstalk-spring:
-#    image: "seheon/beanstalk-docker"
-#    ports:
-#      - "80:8080"
-#    restart: "always"

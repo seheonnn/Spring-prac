@@ -77,6 +77,7 @@ jobs:
       - name: Generate deployment package
         run: |
           mkdir -p deploy
+          cp docker-compose.yml deploy/docker-compose.yml
           cp Dockerrun.aws.json deploy/Dockerrun.aws.json
           docker tag seheon/beanstalk-docker seheon/beanstalk-docker:latest
 
@@ -89,5 +90,5 @@ jobs:
           environment_name: Project-prod-study-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: deploy/Dockerrun.aws.json
+          deployment_package: deploy/
           wait_for_deployment: false
