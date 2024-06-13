@@ -3,19 +3,7 @@
   "Volumes": [],
   "Containers": [
     {
-      "Name": "nginx",
-      "Image": "nginx",
-      "Essential": true,
-      "Memory": 128,
-      "Ports": [
-        {
-          "HostPort": 80,
-          "ContainerPort": 80
-        }
-      ]
-    },
-    {
-      "Name": "beanstalk-docker",
+      "Name": "springboot-app",
       "Image": "seheon/beanstalk-docker",
       "Essential": true,
       "Memory": 512,
@@ -33,21 +21,6 @@
         {
           "Name": "TZ",
           "Value": "Asia/Seoul"
-        }
-      ],
-      "Links": [
-        "redis"
-      ]
-    },
-    {
-      "Name": "redis",
-      "Image": "redis",
-      "Essential": false,
-      "Memory": 256,
-      "Ports": [
-        {
-          "HostPort": 6379,
-          "ContainerPort": 6379
         }
       ]
     }

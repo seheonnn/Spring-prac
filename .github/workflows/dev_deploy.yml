@@ -77,8 +77,6 @@ jobs:
       - name: Generate deployment package
         run: |
           mkdir -p deploy
-          cp build/libs/*.jar deploy/application.jar
-          cp .platform/nginx.conf deploy/nginx.conf
           cp Dockerrun.aws.json deploy/Dockerrun.aws.json
           docker tag seheon/beanstalk-docker seheon/beanstalk-docker:latest
 
