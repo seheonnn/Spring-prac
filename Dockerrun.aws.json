@@ -1,13 +1,30 @@
 {
   "AWSEBDockerrunVersion": "1",
-  "Image": {
-    "Name": "seheon/beanstalk-docker",
-    "Update": "true"
-  },
-  "Ports": [
+  "Volumes": [],
+  "Containers": [
     {
-      "ContainerPort": "5000",
-      "HostPort": "5000"
+      "Name": "beanstalk-docker",
+      "Image": "seheon/beanstalk-docker",
+      "Essential": true,
+      "Memory": 512,
+      "Ports": [
+        {
+          "HostPort": 8080,
+          "ContainerPort": 8080
+        }
+      ]
+    },
+    {
+      "Name": "redis",
+      "Image": "redis",
+      "Essential": false,
+      "Memory": 256,
+      "Ports": [
+        {
+          "HostPort": 6379,
+          "ContainerPort": 6379
+        }
+      ]
     }
   ]
 }
