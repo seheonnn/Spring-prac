@@ -7,9 +7,14 @@
       "Image": "seheon/beanstalk-docker",
       "Essential": true,
       "Memory": 512,
-      "Ports": [
+      "PortMappings": [
         {
           "HostPort": 8080,
+          "ContainerPort": 8080
+        }
+      ],
+      "Ports": [
+        {
           "ContainerPort": 8080
         }
       ]
@@ -19,9 +24,14 @@
       "Image": "redis",
       "Essential": false,
       "Memory": 256,
-      "Ports": [
+      "PortMappings": [
         {
           "HostPort": 6379,
+          "ContainerPort": 6379
+        }
+      ],
+      "Ports": [
+        {
           "ContainerPort": 6379
         }
       ]
