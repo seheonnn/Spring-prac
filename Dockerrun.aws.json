@@ -3,11 +3,28 @@
   "Volumes": [],
   "Containers": [
     {
+      "Name": "nginx",
+      "Image": "nginx",
+      "Essential": true,
+      "Memory": 128,
+      "Ports": [
+        {
+          "HostPort": 80,
+          "ContainerPort": 80
+        }
+      ],
+      "Ports": [
+        {
+          "ContainerPort": 80
+        }
+      ]
+    },
+    {
       "Name": "beanstalk-docker",
       "Image": "seheon/beanstalk-docker",
       "Essential": true,
       "Memory": 512,
-      "PortMappings": [
+      "Ports": [
         {
           "HostPort": 8080,
           "ContainerPort": 8080
@@ -17,6 +34,19 @@
         {
           "ContainerPort": 8080
         }
+      ],
+      "Environment": [
+        {
+          "Name": "SPRING_PROFILES_ACTIVE",
+          "Value": "dev"
+        },
+        {
+          "Name": "TZ",
+          "Value": "Asia/Seoul"
+        }
+      ],
+      "Links": [
+        "redis"
       ]
     },
     {
@@ -24,7 +54,7 @@
       "Image": "redis",
       "Essential": false,
       "Memory": 256,
-      "PortMappings": [
+      "Ports": [
         {
           "HostPort": 6379,
           "ContainerPort": 6379
