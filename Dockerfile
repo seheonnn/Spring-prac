@@ -20,10 +20,6 @@ FROM openjdk:17-jdk-slim AS runner
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar app.jar
 
-# 애플리케이션 실행 환경 설정
-ENV SPRING_PROFILES_ACTIVE=dev
-ENV JAVA_OPTS="-Xms512m -Xmx1024m -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/app/logs/gc.log -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/app/logs/heapdump.hprof"
-
 EXPOSE 8080
 
 # 애플리케이션 실행
