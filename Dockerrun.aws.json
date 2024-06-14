@@ -7,8 +7,8 @@
       "Update": "true",
       "PortMappings": [
         {
-          "ContainerPort": 8080,
-          "HostPort": 8080
+          "ContainerPort": 5000,
+          "HostPort": 5000
         }
       ],
       "Environment": [

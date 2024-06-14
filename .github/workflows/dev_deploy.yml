@@ -33,6 +33,8 @@ jobs:
           echo "    multipart:" >> application.yml
           echo "      max-file-size: 200MB" >> application.yml
           echo "      max-request-size: 200MB" >> application.yml
+          echo "server:" >> application.yml
+          echo "  port: 5000" >> application.yml
 
       - name: Set dev.yml
         uses: microsoft/variable-substitution@v1
@@ -61,16 +63,8 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      #      - name: Docker Hub push
-      #        run: docker push seheon/beanstalk-docker
-
-      - name: Docker build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: seheon/beanstalk-docker:latest
+      - name: Docker Hub push
+        run: docker push seheon/beanstalk-docker
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
@@ -86,10 +80,10 @@ jobs:
       - name: Generate deployment package
         run: |
           mkdir -p deploy
+          cp -r .ebextensions deploy/.ebextensions
           cp Dockerrun.aws.json deploy/Dockerrun.aws.json
-          cd deploy
-          zip -r ../deploy.zip .
-          cd ..
+          cd deploy && zip -r deploy.zip .
+
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
@@ -100,5 +94,5 @@ jobs:
           environment_name: Project-prod-study-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: deploy.zip
+          deployment_package: deploy/deploy.zip
           wait_for_deployment: false

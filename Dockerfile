@@ -20,7 +20,7 @@ FROM openjdk:17-jdk-slim AS runner
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar app.jar
 
-EXPOSE 8080
+EXPOSE 5000
 
 # 애플리케이션 실행
 CMD ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
