@@ -42,6 +42,7 @@ jobs:
           spring.datasource.url: ${{ secrets.DB_URL }}
           spring.datasource.username: ${{ secrets.DB_USER }}
           spring.datasource.password: ${{ secrets.DB_PW }}
+          jwt.secret: ${{ secrets.SECURITY_SECRET }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew

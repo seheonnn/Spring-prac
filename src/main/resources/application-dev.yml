@@ -19,7 +19,7 @@ logging:
     org.hibernate.SQL: OFF
 
 jwt:
-  secret: "dkqorhvmekgkwlaksdltlrksdpanjfajrdmausdksehlrpTwlckawk"
+  secret: ${SECURITY_SECRET}
   token:
     access-expiration-time: 9999999
     refresh-expiration-time: 9999999
