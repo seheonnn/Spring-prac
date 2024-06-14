@@ -3,7 +3,7 @@
   "ContainerDefinitions": [
     {
       "Name": "springboot-app",
-      "Image": "seheon/beanstalk-docker",
+      "Image": "seheon/beanstalk-docker:latest",
       "Update": "true",
       "PortMappings": [
         {
@@ -31,7 +31,7 @@
     },
     {
       "Name": "redis",
-      "Image": "redis",
+      "Image": "redis:latest",
       "PortMappings": [
         {
           "ContainerPort": 6379,
