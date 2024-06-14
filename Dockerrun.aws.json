@@ -1,12 +1,10 @@
 {
   "AWSEBDockerrunVersion": "1",
-  "Volumes": [],
   "ContainerDefinitions": [
     {
       "Name": "springboot-app",
       "Image": "seheon/beanstalk-docker",
-      "Essential": true,
-      "Memory": 512,
+      "Update": "true",
       "PortMappings": [
         {
           "ContainerPort": 8080,
@@ -34,8 +32,6 @@
     {
       "Name": "redis",
       "Image": "redis",
-      "Essential": false,
-      "Memory": 256,
       "PortMappings": [
         {
           "ContainerPort": 6379,
