@@ -78,9 +78,7 @@ jobs:
         run: |
           mkdir -p deploy
           cp Dockerrun.aws.json deploy/Dockerrun.aws.json
-          cd deploy
-          zip -r ../deploy.zip .
-          cd ..
+          zip -r deploy.zip deploy/*
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
