@@ -5,10 +5,10 @@
       "Name": "springboot-app",
       "Image": "seheon/beanstalk-docker:latest",
       "Update": "true",
-      "PortMappings": [
+      "Ports": [
         {
-          "ContainerPort": 5000,
-          "HostPort": 5000
+          "ContainerPort": 8080,
+          "HostPort": 8080
         }
       ],
       "Environment": [
@@ -32,7 +32,7 @@
     {
       "Name": "redis",
       "Image": "redis:latest",
-      "PortMappings": [
+      "Ports": [
         {
           "ContainerPort": 6379,
           "HostPort": 6379
