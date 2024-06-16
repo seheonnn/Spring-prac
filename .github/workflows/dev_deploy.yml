@@ -24,10 +24,8 @@ jobs:
 
       - name: Convert to dev YML
         run: |
-          cd ./src/main/resources
-          [ -e "application.yml" ] && rm application.yml
-          touch ./src/main/resources/application.yml
-          echo "${{ secrets.APPLICATION_SECRET }}" > ./api/src/main/resources/application.yml
+          if [ -e "./src/main/resources/application.yml" ]; then rm ./src/main/resources/application.yml; fi
+          echo "${{ secrets.APPLICATION_SECRET }}" > ./src/main/resources/application.yml
 
       #      - name: Set dev.yml
       #        uses: microsoft/variable-substitution@v1
