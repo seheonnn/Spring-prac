@@ -1,3 +1,4 @@
+*-secret.yml
 # Mac os
 *.Ds_Store
 **/data/mysql/
