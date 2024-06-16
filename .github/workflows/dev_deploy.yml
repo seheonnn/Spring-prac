@@ -26,7 +26,7 @@ jobs:
         run: |
           cd ./src/main/resources
           [ -e "application.yml" ] && rm application.yml
-          touch ./api/src/main/resources/application.yml
+          touch ./src/main/resources/application.yml
           echo "${{ secrets.APPLICATION_SECRET }}" > ./api/src/main/resources/application.yml
 
       #      - name: Set dev.yml
