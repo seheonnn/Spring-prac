@@ -6,7 +6,7 @@
       "Image": "891377099059.dkr.ecr.ap-northeast-2.amazonaws.com/beanstalk:latest",
       "Essential": true,
       "Memory": 512,
-      "PortMappings": [
+      "Ports": [
         {
           "ContainerPort": 8080,
           "HostPort": 8080
@@ -31,7 +31,7 @@
       "Image": "redis:latest",
       "Essential": false,
       "Memory": 256,
-      "PortMappings": [
+      "Ports": [
         {
           "ContainerPort": 6379,
           "HostPort": 6379
