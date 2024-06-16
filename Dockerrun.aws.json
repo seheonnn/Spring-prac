@@ -1,43 +1,13 @@
 {
   "AWSEBDockerrunVersion": "1",
-  "ContainerDefinitions": [
+  "Image": {
+    "Name": "891377099059.dkr.ecr.ap-northeast-2.amazonaws.com/beanstalk",
+    "Update": "true"
+  },
+  "Ports": [
     {
-      "Name": "springboot-app",
-      "Image": "seheon/beanstalk-docker:latest",
-      "Update": "true",
-      "Ports": [
-        {
-          "ContainerPort": 8080,
-          "HostPort": 8080
-        }
-      ],
-      "Environment": [
-        {
-          "Name": "SPRING_PROFILES_ACTIVE",
-          "Value": "dev"
-        },
-        {
-          "Name": "TZ",
-          "Value": "Asia/Seoul"
-        },
-        {
-          "Name": "REDIS_HOST",
-          "Value": "redis"
-        }
-      ],
-      "Links": [
-        "redis"
-      ]
-    },
-    {
-      "Name": "redis",
-      "Image": "redis:latest",
-      "Ports": [
-        {
-          "ContainerPort": 6379,
-          "HostPort": 6379
-        }
-      ]
+      "ContainerPort": "8080",
+      "HostPort": "8080"
     }
   ]
 }
