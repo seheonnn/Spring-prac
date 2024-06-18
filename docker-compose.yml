@@ -19,7 +19,7 @@
 #    ports:
 #      - "6379:6379"
 
-version: '3'
+version: '3.8'
 services:
   beanstalk-app:
     image: 891377099059.dkr.ecr.ap-northeast-2.amazonaws.com/beanstalk
@@ -27,8 +27,11 @@ services:
       - "8080:8080"
     environment:
       - REDIS_HOST=redis
+    depends_on:
+      - redis
 
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
+

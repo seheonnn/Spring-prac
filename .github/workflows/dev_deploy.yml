@@ -93,10 +93,11 @@ jobs:
 
       - name: Generate deployment package
         run: |
-          mkdir -p deploy
-          cp -r .ebextensions-dev deploy/.ebextensions
-          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
-          cd deploy && zip -r deploy.zip .
+               mkdir -p deploy
+               cp -r .ebextensions-dev deploy/.ebextensions
+          #          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
+               cp docker-compose.yml deploy/docker-compose.yml
+               cd deploy && zip -r deploy.zip .
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
