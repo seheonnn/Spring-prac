@@ -5,9 +5,9 @@ ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 
 # Redis 설치
-RUN sudo yum update && \
-    sudo yum install -y redis-server && \
-    sudo rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y redis-server && \
+    rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8080 6379
 
