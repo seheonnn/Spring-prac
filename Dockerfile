@@ -4,12 +4,16 @@ ARG JAR_FILE=build/libs/*.jar
 
 COPY ${JAR_FILE} app.jar
 
-# Redis 설치
-RUN #apt-get update && \
-#    apt-get install -y redis-server && \
-#    rm -rf /var/lib/apt/lists/*
+# Redis 및 supervisord 설치
+RUN apt-get update && \
+    apt-get install -y redis-server supervisor && \
+    rm -rf /var/lib/apt/lists/*
 
-#EXPOSE 8080 6379
-EXPOSE 8080
+# supervisord 설정 파일 복사
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+# 포트 노출
+EXPOSE 8080 6379
+
+# supervisord를 사용하여 애플리케이션과 Redis 실행
+CMD ["/usr/bin/supervisord"]
