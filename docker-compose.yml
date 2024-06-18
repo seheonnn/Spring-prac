@@ -20,24 +20,12 @@
 #      - "6379:6379"
 
 version: '3'
-
 services:
-  app:
+  beanstalk-app:
     image: 891377099059.dkr.ecr.ap-northeast-2.amazonaws.com/beanstalk
     ports:
       - "8080:8080"
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: '0.25'
-
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          cpus: '0.125'

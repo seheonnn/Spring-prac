@@ -1,13 +1,5 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "Image": {
-    "Name": "891377099059.dkr.ecr.ap-northeast-2.amazonaws.com/beanstalk",
-    "Update": "true"
-  },
-  "Ports": [
-    {
-      "ContainerPort": "8080",
-      "HostPort": "8080"
-    }
-  ]
+  "AWSEBDockerrunVersion": "3",
+  "volumes": [],
+  "containerDefinitions": []
 }
