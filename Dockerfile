@@ -1,12 +1,13 @@
-FROM openjdk:17-jdk
+# Eclipse Temurin OpenJDK 17 이미지를 사용
+FROM eclipse-temurin:17-jdk
 ARG JAR_FILE=build/libs/*.jar
 
 COPY ${JAR_FILE} app.jar
 
 # Redis 설치
-RUN apt-get update && \
-    apt-get install -y redis-server && \
-    rm -rf /var/lib/apt/lists/*
+RUN sudo yum update && \
+    sudo yum install -y redis-server && \
+    sudo rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8080 6379
 
