@@ -63,15 +63,9 @@ jobs:
           ECR_REPOSITORY: beanstalk
           IMAGE_TAG: latest
         run: |
-          # Docker 이미지 빌드
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          
-          # 빌드한 이미지를 Amazon ECR로 푸시
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          
-          # 빌드된 이미지의 정보 출력
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
 
 
       - name: Get current time
@@ -90,7 +84,6 @@ jobs:
           mkdir -p deploy
           cp -r .ebextensions-dev deploy/.ebextensions
           cp Dockerrun.aws.json deploy/Dockerrun.aws.json
-          cp -r .platform deploy/.platform
           cd deploy && zip -r deploy.zip .
 
 
@@ -103,5 +96,5 @@ jobs:
           environment_name: Project-prod-study-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: deploy/deploy.zip
+          deployment_package: Dockerrun.aws.json
           wait_for_deployment: false
