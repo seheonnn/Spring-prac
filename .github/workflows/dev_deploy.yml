@@ -22,20 +22,32 @@ jobs:
           java-version: 17
           distribution: 'adopt'
 
+      #      - name: Convert to dev YML
+      #        run: |
+      #          if [ -e "./src/main/resources/application.yml" ]; then rm ./src/main/resources/application.yml; fi
+      #          echo "${{ secrets.APPLICATION_SECRET }}" > ./src/main/resources/application.yml
+
       - name: Convert to dev YML
         run: |
-          if [ -e "./src/main/resources/application.yml" ]; then rm ./src/main/resources/application.yml; fi
-          echo "${{ secrets.APPLICATION_SECRET }}" > ./src/main/resources/application.yml
+          cd ./src/main/resources
+          [ -e "application.yml" ] && rm application.yml
+          echo "spring:" > application.yml
+          echo "  profiles:" >> application.yml
+          echo "    active: dev" >> application.yml
+          echo "  servlet:" >> application.yml
+          echo "    multipart:" >> application.yml
+          echo "      max-file-size: 200MB" >> application.yml
+          echo "      max-request-size: 200MB" >> application.yml
 
-      #      - name: Set dev.yml
-      #        uses: microsoft/variable-substitution@v1
-      #        with:
-      #          files: ./src/main/resources/application-dev.yml
-      #        env:
-      #          spring.datasource.url: ${{ secrets.DB_URL }}
-      #          spring.datasource.username: ${{ secrets.DB_USER }}
-      #          spring.datasource.password: ${{ secrets.DB_PW }}
-      #          jwt.secret: ${{ secrets.SECURITY_SECRET }}
+      - name: Set dev.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./src/main/resources/application-dev.yml
+        env:
+          spring.datasource.url: ${{ secrets.DB_URL }}
+          spring.datasource.username: ${{ secrets.DB_USER }}
+          spring.datasource.password: ${{ secrets.DB_PW }}
+          jwt.secret: ${{ secrets.SECURITY_SECRET }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
@@ -83,7 +95,8 @@ jobs:
         run: |
           mkdir -p deploy
           cp -r .ebextensions-dev deploy/.ebextensions
-          cp docker-compose.yml deploy/docker-compose.yml
+          #          cp docker-compose.yml deploy/docker-compose.yml
+          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
           cd deploy && zip -r deploy.zip .
 
       - name: Beanstalk Deploy
@@ -95,5 +108,5 @@ jobs:
           environment_name: Project-prod-study-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: deploy/deploy.zip
+          deployment_package: Dockerrun.aws.json
           wait_for_deployment: false
