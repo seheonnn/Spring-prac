@@ -1,44 +1,25 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "ContainerDefinitions": [
+  "AWSEBDockerrunVersion": "3",
+  "containerDefinitions": [
     {
-      "Name": "springboot-app",
-      "Image": "891377099059.dkr.ecr.ap-northeast-2.amazonaws.com/beanstalk:latest",
-      "Essential": true,
-      "Memory": 512,
-      "Ports": [
+      "name": "beanstalk-app",
+      "image": "891377099059.dkr.ecr.ap-northeast-2.amazonaws.com/beanstalk",
+      "essential": true,
+      "ports": [
         {
-          "ContainerPort": 8080,
-          "HostPort": 8080
+          "containerPort": 8080,
+          "hostPort": 8080
         }
-      ],
-      "Environment": [
-        {
-          "Name": "SPRING_PROFILES_ACTIVE",
-          "Value": "dev"
-        },
-        {
-          "Name": "TZ",
-          "Value": "Asia/Seoul"
-        },
-        {
-          "Name": "REDIS_HOST",
-          "Value": "redis"
-        }
-      ],
-      "Links": [
-        "redis"
       ]
     },
     {
-      "Name": "redis",
-      "Image": "redis:latest",
-      "Essential": false,
-      "Memory": 256,
-      "Ports": [
+      "name": "redis",
+      "image": "redis:latest",
+      "essential": true,
+      "ports": [
         {
-          "ContainerPort": 6379,
-          "HostPort": 6379
+          "containerPort": 6379,
+          "hostPort": 6379
         }
       ]
     }
