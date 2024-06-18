@@ -83,9 +83,8 @@ jobs:
         run: |
           mkdir -p deploy
           cp -r .ebextensions-dev deploy/.ebextensions
-          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
+          cp docker-compose.yml deploy/docker-compose.yml
           cd deploy && zip -r deploy.zip .
-
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
@@ -96,5 +95,5 @@ jobs:
           environment_name: Project-prod-study-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: Dockerrun.aws.json
+          deployment_package: deploy/deploy.zip
           wait_for_deployment: false
