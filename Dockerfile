@@ -1,5 +1,4 @@
-FROM adoptopenjdk:11-jdk-hotspot
-
+FROM openjdk:17-jdk
 ARG JAR_FILE=build/libs/*.jar
 
 COPY ${JAR_FILE} app.jar
