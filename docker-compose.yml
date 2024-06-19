@@ -1,37 +1,20 @@
-## docker compose up -d
-#version: '3'
-#
-#services:
-#  mysql:
-#    image: mysql:latest
-#    container_name: umcstudy
-#    environment:
-#      MYSQL_ROOT_USER: root
-#      MYSQL_ROOT_PASSWORD: root1234!
-#      MYSQL_DATABASE: umcstudy
-#    ports:
-#      - "3306:3306"
-#    volumes:
-#      - ./data/mysql:/var/lib/mysql
-#
-#  redis:
-#    image: redis:latest
-#    ports:
-#      - "6379:6379"
+# docker compose up -d
+version: '3'
 
-version: '3.8'
 services:
-  beanstalk-app:
-    image: 891377099059.dkr.ecr.ap-northeast-2.amazonaws.com/beanstalk
-    ports:
-      - "8080:8080"
+  mysql:
+    image: mysql:latest
+    container_name: umcstudy
     environment:
-      - REDIS_HOST=redis
-    depends_on:
-      - redis
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root1234!
+      MYSQL_DATABASE: umcstudy
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
 
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
-
