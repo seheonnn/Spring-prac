@@ -26,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import umc.springumc.apiPayload.global.ApiResponse;
 import umc.springumc.security.jwt.dto.JwtDto;
+import umc.springumc.security.jwt.exception.TokenErrorCode;
 import umc.springumc.security.jwt.userdetails.CustomUserDetails;
 import umc.springumc.security.jwt.util.HttpResponseUtil;
 import umc.springumc.security.jwt.util.JwtUtil;
@@ -92,7 +93,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 		String errorMessage;
 		if (failed instanceof BadCredentialsException) {
-			errorMessage = "Bad credentials";
+			errorMessage = TokenErrorCode.BAD_CREDENTIALS.getMessage();
 		} else if (failed instanceof LockedException) {
 			errorMessage = "Account is locked";
 		} else if (failed instanceof DisabledException) {
@@ -100,7 +101,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		} else if (failed instanceof UsernameNotFoundException) {
 			errorMessage = "Account not found";
 		} else if (failed instanceof AuthenticationServiceException) {
-			errorMessage = "Error occurred while parsing request body";
+			errorMessage = TokenErrorCode.ACCOUNT_NOT_FOUND.getMessage();
 		} else {
 			errorMessage = "Authentication failed";
 		}

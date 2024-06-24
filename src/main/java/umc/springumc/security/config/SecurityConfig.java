@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import umc.springumc.security.jwt.exception.CustomDaoAuthenticationProvider;
 import umc.springumc.security.jwt.exception.JwtAccessDeniedHandler;
 import umc.springumc.security.jwt.exception.JwtAuthenticationEntryPoint;
 import umc.springumc.security.jwt.filter.CustomLoginFilter;
@@ -45,6 +47,7 @@ public class SecurityConfig {
 
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+	private final UserDetailsService userDetailsService;
 	private final JwtUtil jwtUtil;
 	private final RedisUtil redisUtil;
 
@@ -130,5 +133,13 @@ public class SecurityConfig {
 			);
 
 		return http.build();
+	}
+
+	@Bean
+	public CustomDaoAuthenticationProvider customDaoAuthenticationProvider() {
+		CustomDaoAuthenticationProvider provider = new CustomDaoAuthenticationProvider();
+		provider.setUserDetailsService(userDetailsService);
+		provider.setPasswordEncoder(passwordEncoder());
+		return provider;
 	}
 }
