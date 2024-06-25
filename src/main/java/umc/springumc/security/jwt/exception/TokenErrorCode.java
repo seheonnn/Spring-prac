@@ -19,8 +19,6 @@ public enum TokenErrorCode implements BaseErrorCode {
 	TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "SEC4041", "토큰이 존재하지 않습니다."),
 	INTERNAL_SECURITY_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "SEC5000", "인증 처리 중 서버 에러가 발생했습니다."),
 	INTERNAL_TOKEN_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "SEC5001", "토큰 처리 중 서버 에러가 발생했습니다."),
-	BAD_CREDENTIALS(HttpStatus.UNAUTHORIZED, "SEC4002", "비밀번호가 틀렸습니다"),
-	ACCOUNT_NOT_FOUND(HttpStatus.UNAUTHORIZED, "SEC4003", "계정을 찾을 수 없습니다."),
 
 	;
 
