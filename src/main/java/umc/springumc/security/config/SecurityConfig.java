@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,7 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import umc.springumc.security.jwt.exception.CustomDaoAuthenticationProvider;
 import umc.springumc.security.jwt.exception.JwtAccessDeniedHandler;
 import umc.springumc.security.jwt.exception.JwtAuthenticationEntryPoint;
 import umc.springumc.security.jwt.filter.CustomLoginFilter;
@@ -136,10 +136,11 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public CustomDaoAuthenticationProvider customDaoAuthenticationProvider() {
-		CustomDaoAuthenticationProvider provider = new CustomDaoAuthenticationProvider();
-		provider.setUserDetailsService(userDetailsService);
-		provider.setPasswordEncoder(passwordEncoder());
-		return provider;
+	public DaoAuthenticationProvider daoAuthenticationProvider() {
+		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+		authenticationProvider.setUserDetailsService(userDetailsService);
+		authenticationProvider.setPasswordEncoder(passwordEncoder());
+		authenticationProvider.setHideUserNotFoundExceptions(false);
+		return authenticationProvider;
 	}
 }

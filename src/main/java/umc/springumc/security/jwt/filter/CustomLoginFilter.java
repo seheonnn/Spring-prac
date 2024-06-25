@@ -92,7 +92,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 		String errorMessage;
 		if (failed instanceof BadCredentialsException) {
-			errorMessage = "Password Not Available";
+			errorMessage = "Bad credentials";
 		} else if (failed instanceof LockedException) {
 			errorMessage = "Account is locked";
 		} else if (failed instanceof DisabledException) {
@@ -100,7 +100,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		} else if (failed instanceof UsernameNotFoundException) {
 			errorMessage = "Account not found";
 		} else if (failed instanceof AuthenticationServiceException) {
-			errorMessage = ("Account not found");
+			errorMessage = "Error occurred while parsing request body";
 		} else {
 			errorMessage = "Authentication failed";
 		}
