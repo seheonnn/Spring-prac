@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,8 +39,8 @@ import umc.springumc.security.jwt.util.RedisUtil;
 public class SecurityConfig {
 
 	private final String[] swaggerUrls = {"/swagger-ui/**", "/v3/**"};
-	private final String[] authUrls = {"/", "/api/v1/users/join/**", "/api/v1/users/login/**", "/api/v1/redis/**",
-		"/health"};
+	private final String[] authUrls = {"/", "/api/v1/users/join/**", "/api/v1/users/login/**",
+		"/health", "/actuator/**"};
 	private final String[] allowedUrls = Stream.concat(Arrays.stream(swaggerUrls), Arrays.stream(authUrls))
 		.toArray(String[]::new);
 
@@ -124,12 +125,22 @@ public class SecurityConfig {
 			.logout(logout -> logout
 				.logoutUrl("/api/v1/users/logout")
 				.addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
-				.logoutSuccessHandler((request, response, authentication)
-					-> HttpResponseUtil.setSuccessResponse(
-					response,
-					HttpStatus.OK,
-					"로그아웃 성공"
-				))
+				.logoutSuccessHandler((request, response, authentication) ->
+					HttpResponseUtil.setSuccessResponse(
+						response,
+						HttpStatus.OK,
+						"로그아웃 성공"
+					)
+				)
+			)
+			.addFilterAfter(new LogoutFilter(
+					(request, response, authentication) ->
+						HttpResponseUtil.setSuccessResponse(
+							response,
+							HttpStatus.OK,
+							"로그아웃 성공"
+						), new CustomLogoutHandler(redisUtil, jwtUtil)),
+				JwtAuthenticationFilter.class
 			);
 
 		return http.build();

@@ -135,7 +135,7 @@ public class JwtUtil {
 		//redis에 refreshToken 있는지 검증
 		if (!redisUtil.hasKey(username + "_refresh_token")) {
 			log.warn("[*] case : Invalid refreshToken");
-			throw new SecurityCustomException(INVALID_TOKEN);
+			throw new SecurityCustomException(TOKEN_EXPIRED);
 		}
 	}
 
