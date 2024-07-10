@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import umc.springumc.apiPayload.global.ApiResponse;
 import umc.springumc.apiPayload.global.BaseErrorCode;
 import umc.springumc.security.jwt.exception.SecurityCustomException;
-import umc.springumc.security.jwt.exception.TokenErrorCode;
+import umc.springumc.security.jwt.exception.SecurityErrorCode;
 import umc.springumc.security.jwt.util.HttpResponseUtil;
 
 @Slf4j
@@ -42,8 +42,8 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 		} catch (Exception e) {
 			log.error("[*] Exception : ", e);
 			ApiResponse<String> errorResponse = ApiResponse.onFailure(
-				TokenErrorCode.INTERNAL_SECURITY_ERROR.getCode(),
-				TokenErrorCode.INTERNAL_SECURITY_ERROR.getMessage(),
+				SecurityErrorCode.INTERNAL_SECURITY_ERROR.getCode(),
+				SecurityErrorCode.INTERNAL_SECURITY_ERROR.getMessage(),
 				e.getMessage()
 			);
 			HttpResponseUtil.setErrorResponse(

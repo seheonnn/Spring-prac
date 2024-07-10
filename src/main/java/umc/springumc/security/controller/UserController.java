@@ -28,6 +28,7 @@ public class UserController {
 
 	@PostMapping("/join")
 	public ApiResponse<UserRegisterResponseDto> register(@Valid @RequestBody UserRegisterRequestDto request) {
+		log.info("============== join ===============");
 		return ApiResponse.onSuccess(userService.register(request));
 	}
 

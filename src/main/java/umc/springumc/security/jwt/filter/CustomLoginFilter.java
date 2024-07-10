@@ -26,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import umc.springumc.apiPayload.global.ApiResponse;
 import umc.springumc.security.jwt.dto.JwtDto;
+import umc.springumc.security.jwt.exception.SecurityErrorCode;
 import umc.springumc.security.jwt.userdetails.CustomUserDetails;
 import umc.springumc.security.jwt.util.HttpResponseUtil;
 import umc.springumc.security.jwt.util.JwtUtil;
@@ -88,27 +89,48 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		@NonNull HttpServletResponse response,
 		@NonNull AuthenticationException failed) throws IOException {
 
-		logger.info("[*] Login Fail");
+		log.info("[*] Login Fail");
 
-		String errorMessage;
+		// String errorMessage;
+		// if (failed instanceof BadCredentialsException) {
+		// 	errorMessage = "Bad credentials";
+		// } else if (failed instanceof LockedException) {
+		// 	errorMessage = "Account is locked";
+		// } else if (failed instanceof DisabledException) {
+		// 	errorMessage = "Account is disabled";
+		// } else if (failed instanceof UsernameNotFoundException) {
+		// 	errorMessage = "Account not found";
+		// } else if (failed instanceof AuthenticationServiceException) {
+		// 	errorMessage = "Error occurred while parsing request body";
+		// } else {
+		// 	errorMessage = "Authentication failed";
+		// }
+		// HttpResponseUtil.setErrorResponse(
+		// 	response, HttpStatus.UNAUTHORIZED,
+		// 	ApiResponse.onFailure(
+		// 		HttpStatus.BAD_REQUEST.name(),
+		// 		errorMessage
+		// 	)
+		// );
+
+		SecurityErrorCode errorCode;
 		if (failed instanceof BadCredentialsException) {
-			errorMessage = "Bad credentials";
-		} else if (failed instanceof LockedException) {
-			errorMessage = "Account is locked";
-		} else if (failed instanceof DisabledException) {
-			errorMessage = "Account is disabled";
+			errorCode = SecurityErrorCode.BAD_CREDENTIALS;
+		} else if (failed instanceof LockedException || failed instanceof DisabledException) {
+			errorCode = SecurityErrorCode.FORBIDDEN;
 		} else if (failed instanceof UsernameNotFoundException) {
-			errorMessage = "Account not found";
+			errorCode = SecurityErrorCode.USER_NOT_FOUND;
 		} else if (failed instanceof AuthenticationServiceException) {
-			errorMessage = "Error occurred while parsing request body";
+			errorCode = SecurityErrorCode.INTERNAL_SECURITY_ERROR;
 		} else {
-			errorMessage = "Authentication failed";
+			errorCode = SecurityErrorCode.UNAUTHORIZED;
 		}
 		HttpResponseUtil.setErrorResponse(
-			response, HttpStatus.UNAUTHORIZED,
+			response,
+			errorCode.getHttpStatus(),
 			ApiResponse.onFailure(
-				HttpStatus.BAD_REQUEST.name(),
-				errorMessage
+				errorCode.getCode(),
+				errorCode.getMessage()
 			)
 		);
 	}

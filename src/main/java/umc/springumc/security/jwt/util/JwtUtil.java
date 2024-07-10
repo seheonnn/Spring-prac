@@ -1,6 +1,6 @@
 package umc.springumc.security.jwt.util;
 
-import static umc.springumc.security.jwt.exception.TokenErrorCode.*;
+import static umc.springumc.security.jwt.exception.SecurityErrorCode.*;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;

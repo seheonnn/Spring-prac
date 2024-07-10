@@ -22,6 +22,6 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 		log.warn("[*] Access Denied: ", accessDeniedException);
 
 		HttpResponseUtil.setErrorResponse(response, HttpStatus.FORBIDDEN,
-			TokenErrorCode.FORBIDDEN.getErrorResponse());
+			SecurityErrorCode.FORBIDDEN.getErrorResponse());
 	}
 }

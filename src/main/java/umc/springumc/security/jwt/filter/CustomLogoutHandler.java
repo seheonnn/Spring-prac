@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import umc.springumc.security.jwt.exception.SecurityCustomException;
-import umc.springumc.security.jwt.exception.TokenErrorCode;
+import umc.springumc.security.jwt.exception.SecurityErrorCode;
 import umc.springumc.security.jwt.util.JwtUtil;
 import umc.springumc.security.jwt.util.RedisUtil;
 
@@ -29,11 +29,6 @@ public class CustomLogoutHandler implements LogoutHandler {
 
 			String accessToken = jwtUtil.resolveAccessToken(request);
 
-			// if (redisUtil.hasKey(accessToken)) {
-			// 	log.info("=====================================");
-			// 	throw new SecurityCustomException(TokenErrorCode.INVALID_TOKEN);
-			// }
-
 			redisUtil.saveAsValue(
 				accessToken,
 				"logout",
@@ -48,13 +43,9 @@ public class CustomLogoutHandler implements LogoutHandler {
 				email + "_refresh_token"
 			);
 
-			// redisUtil.delete(
-			// 	jwtUtil.getUsername(accessToken) + "_refresh_token"
-			// );
-
 		} catch (ExpiredJwtException e) {
 			log.warn("[*] case : accessToken expired");
-			throw new SecurityCustomException(TokenErrorCode.TOKEN_EXPIRED);
+			throw new SecurityCustomException(SecurityErrorCode.TOKEN_EXPIRED);
 		}
 	}
 }

@@ -17,7 +17,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import umc.springumc.security.jwt.exception.SecurityCustomException;
-import umc.springumc.security.jwt.exception.TokenErrorCode;
+import umc.springumc.security.jwt.exception.SecurityErrorCode;
 import umc.springumc.security.jwt.userdetails.CustomUserDetails;
 import umc.springumc.security.jwt.util.JwtUtil;
 import umc.springumc.security.jwt.util.RedisUtil;
@@ -58,10 +58,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 		} catch (ExpiredJwtException e) {
 			log.warn("[*] case : accessToken Expired");
-			throw new SecurityCustomException(TokenErrorCode.TOKEN_EXPIRED);
+			throw new SecurityCustomException(SecurityErrorCode.TOKEN_EXPIRED);
 		} catch (InsufficientAuthenticationException e) {
 			log.warn("[*] case : FORBIDDEN");
-			throw new SecurityCustomException(TokenErrorCode.FORBIDDEN);
+			throw new SecurityCustomException(SecurityErrorCode.FORBIDDEN);
 		}
 	}
 

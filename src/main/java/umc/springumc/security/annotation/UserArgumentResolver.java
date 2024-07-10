@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import umc.springumc.security.entity.User;
 import umc.springumc.security.jwt.exception.SecurityCustomException;
-import umc.springumc.security.jwt.exception.TokenErrorCode;
+import umc.springumc.security.jwt.exception.SecurityErrorCode;
 import umc.springumc.security.jwt.userdetails.CustomUserDetails;
 import umc.springumc.security.service.UserQueryService;
 
@@ -41,7 +41,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 			return userQueryService.findByUserName(((CustomUserDetails)userDetails).getUsername());
 		} catch (ClassCastException e) {
 			// 로그아웃된 토큰
-			throw new SecurityCustomException(TokenErrorCode.UNAUTHORIZED);
+			throw new SecurityCustomException(SecurityErrorCode.UNAUTHORIZED);
 		}
 	}
 }
