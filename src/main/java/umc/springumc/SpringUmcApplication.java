@@ -9,9 +9,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableJpaAuditing
 @EnableRedisRepositories
 public class SpringUmcApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(SpringUmcApplication.class, args);
 	}
-
 }

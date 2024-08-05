@@ -3,6 +3,12 @@
 *.Ds_Store
 **/data/mysql/
 
+/grafana
+/prometheus/volume
+/prometheus/config/**.log
+!prometheus/config/prometheus.yml
+!prometheus/config/rule.yml
+
 HELP.md
 .gradle
 build/
